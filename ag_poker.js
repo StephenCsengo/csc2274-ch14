@@ -25,6 +25,11 @@ function playDrawPoker() {
   //Set the initial values of the pokerGame object
   pokerGame.currentBank = 500;
   pokerGame.currentBet = 25;
+
+  //Create a new deck of cards and shuffle it
+  let myDeck = new pokerDeck();
+  myDeck.shuffle();
+  console.log(myDeck);
   bankBox.value = pokerGame.currentBank;
   betSelection.onchange = function (e) {
     pokerGame.currentBet = parseInt(
