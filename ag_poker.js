@@ -29,7 +29,9 @@ function playDrawPoker() {
   //Create a new deck of cards and shuffle it
   let myDeck = new pokerDeck();
   myDeck.shuffle();
-  console.log(myDeck);
+
+  //Create a pokerHand object
+  let myHand = new pokerHand(5);
   bankBox.value = pokerGame.currentBank;
   betSelection.onchange = function (e) {
     pokerGame.currentBet = parseInt(
@@ -56,6 +58,12 @@ function playDrawPoker() {
     } else {
       alert("Reduce the size of your bet");
     }
+    //Deal cards into poker hand after confirming there are at least 10 cards in deck
+    if (myDeck.cards.length < 10) {
+      myDeck = new pokerDeck();
+      myDeck.shuffle();
+    }
+    myDeck.dealTo(myHand);
   });
   //Enable the deal and bet options when the current hand ends
   drawButton.addEventListener("click", function () {

@@ -82,4 +82,15 @@ function pokerDeck() {
       return 0.5 - Math.random();
     });
   };
+
+  //Method to deal cards from the deck into a poker hand
+  this.dealTo = function (pokerHand) {
+    for (let i = 0; i < pokerHand.cards.length; i++) {
+      pokerHand.cards[i] = this.cards.shift();
+    }
+  };
+}
+//Constructor function for poker hands
+function pokerHand(handLength) {
+  this.cards = new Array(handLength);
 }
