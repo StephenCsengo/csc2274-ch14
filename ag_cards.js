@@ -54,6 +54,14 @@ pokerCard.prototype.cardImage = function () {
   let suitAbbr = this.suit.substring(0, 1).toLowerCase();
   return suitAbbr + this.rankValue + ".png";
 };
+
+//Method to replace a card with one from the deck
+pokerCard.prototype.replaceFromDeck = function (pokerDeck) {
+  this.suit = pokerDeck.cards[0].suit;
+  this.rank = pokerDeck.cards[0].rank;
+  this.rankValue = pokerDeck.cards[0].rankValue;
+  pokerDeck.cards.shift();
+};
 //Constructor function for poker decks
 function pokerDeck() {
   this.cards = new Array(52);

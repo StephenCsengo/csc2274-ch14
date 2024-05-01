@@ -69,6 +69,17 @@ function playDrawPoker() {
     //Display the card images on the table
     for (let i = 0; i < cardImages.length; i++) {
       cardImages[i].src = myHand.cards[i].cardImage();
+      //Event handler for each card image
+      cardImages[i].index = i;
+      cardImages[i].onclick = function (e) {
+        if (e.target.discard !== true) {
+          e.target.discard = true;
+          e.target.src = "ag_cardback.png";
+        } else {
+          e.target.discard = false;
+          e.target.src = myHand.cards[e.target.index].cardImage();
+        }
+      };
     }
   });
   //Enable the deal and bet options when the current hand ends
@@ -77,6 +88,16 @@ function playDrawPoker() {
     enableObj(betSelection);
     disableObj(drawButton);
     disableObj(standButton);
+
+    //Replace the cards selected
+    for (let i = 0; i < cardImages.length; i++) {
+      if (cardImages[i].discard) {
+        myHand.cards[i].replaceFromDeck(myDeck);
+        cardImages[i].src = myHand.cards[i].cardImage();
+        cardImages[i].discard = false;
+      }
+      cardImages[i].onclick = null;
+    }
   });
   standButton.addEventListener("click", function () {
     enableObj(dealButton);
