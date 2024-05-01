@@ -48,6 +48,12 @@ function pokerCard(cardSuit, cardRank) {
   this.rank = cardRank;
   this.rankValue = null;
 }
+
+//Method to reference the image src file for a card
+pokerCard.prototype.cardImage = function () {
+  let suitAbbr = this.suit.substring(0, 1).toLowerCase();
+  return suitAbbr + this.rankValue + ".png";
+};
 //Constructor function for poker decks
 function pokerDeck() {
   this.cards = new Array(52);

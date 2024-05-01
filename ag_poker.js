@@ -21,6 +21,7 @@ function playDrawPoker() {
   let handValueText = document.getElementById("handValue");
   let betSelection = document.getElementById("bet");
   let bankBox = document.getElementById("bank");
+  let cardImages = document.querySelectorAll("img.cardImg");
 
   //Set the initial values of the pokerGame object
   pokerGame.currentBank = 500;
@@ -64,6 +65,11 @@ function playDrawPoker() {
       myDeck.shuffle();
     }
     myDeck.dealTo(myHand);
+
+    //Display the card images on the table
+    for (let i = 0; i < cardImages.length; i++) {
+      cardImages[i].src = myHand.cards[i].cardImage();
+    }
   });
   //Enable the deal and bet options when the current hand ends
   drawButton.addEventListener("click", function () {
