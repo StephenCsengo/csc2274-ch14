@@ -51,6 +51,7 @@ function playDrawPoker() {
   //Enable the draw and stand buttons after the deal
   dealButton.addEventListener("click", function () {
     if (pokerGame.currentBank >= pokerGame.currentBet) {
+      handValueText.textContent = "";
       disableObj(dealButton);
       disableObj(betSelection);
       enableObj(drawButton);
@@ -98,12 +99,21 @@ function playDrawPoker() {
       }
       cardImages[i].onclick = null;
     }
+    //Eval the hand drawn by user
+    handValueText.textContent = myHand.handType();
+    //Pay out the final hand
+    bankBox.value = pokerGame.payout(myHand.handOdds());
   });
   standButton.addEventListener("click", function () {
     enableObj(dealButton);
     enableObj(betSelection);
     disableObj(drawButton);
     disableObj(standButton);
+
+    //Eval the hand dealt to the user
+    handValueText.textContent = myHand.handType();
+    //Pay out the final hand
+    bankBox.value = pokerGame.payout(myHand.handOdds());
   });
   //Disable poker button
   function disableObj(obj) {
