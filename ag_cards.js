@@ -108,3 +108,99 @@ function pokerDeck() {
 function pokerHand(handLength) {
   this.cards = new Array(handLength);
 }
+//Return the highest ranked card in the hand
+pokerHand.prototype.highCard = function () {
+  return Math.max.call(
+    pokerHand,
+    this.cards[0].rankValue,
+    this.cards[1].rankValue,
+    this.cards[2].rankValue,
+    this.cards[3].rankValue,
+    this.cards[4].rankValue
+  );
+};
+//Test for a flush
+pokerHand.prototype.hasFlush = function () {
+  let firstSuit = this.cards[0].suit;
+  return this.cards.every(function (card) {
+    return card.suit === firstSuit;
+  });
+};
+//Test for a straight
+pokerHand.prototype.hasStraight = function () {
+  this.cards.sort(function (a, b) {
+    return a.rankValue - b.rankValue;
+  });
+  return this.cards.every(function (card, i, cards) {
+    if (i > 0) {
+      return cards[i].rankValue - cards[i - 1].rankValue === 1;
+    } else {
+      return true;
+    }
+  });
+};
+//Test for a straight flush
+pokerHand.prototype.hasStraightFlush = function () {
+  return this.hasFlush() && this.hasStraight();
+};
+//Test for a royal flush
+pokerHand.prototype.hasRoyalFlush = function () {
+  return this.hasStraightFlush() && this.highCard() === 14;
+};
+//Test for duplicates in the hand
+pokerHand.prototype.hasSets = function () {
+  let handSets = {};
+  let sets = "none";
+  let pairRank;
+  this.cards.forEach(function (card) {
+    if (handSets.hasOwnProperty(card.rankValue)) {
+      handSets[card.rankValue]++;
+    } else {
+      handSets[card.rankValue] = 1;
+    }
+  });
+
+  for (let cardRank in handSets) {
+    if (handSets[cardRank] === 4) {
+      sets = "Four of a kind";
+    }
+    if (handSets[cardRank] === 3) {
+      if (sets === "Pair") {
+        sets = "Full House";
+      } else {
+        sets = "Three of a kind";
+      }
+    }
+    if (handSets[cardRank] === 2) {
+      if (sets === "Three of a kind") {
+        sets = "Full House";
+      } else if (sets === "Pair") {
+        sets = "Two pair";
+      } else {
+        sets = "Pair";
+        pairRank = cardRank;
+      }
+    }
+  }
+
+  if (sets === "Pair" && pairRank >= 11) {
+    sets = "Jacks or better";
+  }
+  return sets;
+};
+
+pokerHand.prototype.handType = function () {
+  if (this.hasRoyalFlush()) {
+    return "Royal Flush";
+  } else if (this.hasFlush()) {
+    return "Flush";
+  } else if (this.hasStraight()) {
+    return "Straight";
+  } else {
+    let sets = this.hasSets();
+    if (sets === "Pair" || sets === "none") {
+      sets = "No winner";
+    }
+    return sets;
+  }
+};
